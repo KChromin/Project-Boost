@@ -16,6 +16,12 @@ public class CollisionHandler : MonoBehaviour
     private AudioClip finishSound;
 
     [SerializeField]
+    private ParticleSystem crashParticles;
+
+    [SerializeField]
+    private ParticleSystem finishParticles;
+
+    [SerializeField]
     private float delayAfterCrashInSeconds;
 
     [SerializeField]
@@ -53,6 +59,7 @@ public class CollisionHandler : MonoBehaviour
     {
         inTransition = true;
         Invoke(nameof(ReloadScene), delayAfterCrashInSeconds);
+        crashParticles.Play();
         PlaySoundCrash();
         playerMovement.enabled = false;
     }
@@ -61,6 +68,7 @@ public class CollisionHandler : MonoBehaviour
     {
         inTransition = true;
         Invoke(nameof(LoadNextLevel), delayAfterFinishInSeconds);
+        finishParticles.Play();
         PlaySoundFinish();
         playerMovement.enabled = false;
     }
@@ -86,11 +94,13 @@ public class CollisionHandler : MonoBehaviour
 
     private void PlaySoundCrash()
     {
+        audioSource.Stop();
         audioSource.PlayOneShot(crashSound);
     }
 
     private void PlaySoundFinish()
     {
+        audioSource.Stop();
         audioSource.PlayOneShot(finishSound);
     }
 }
